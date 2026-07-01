@@ -1,3 +1,4 @@
+from chat_helpers import chat, add_user_message, add_assistant_message
 # Overall time complexity is O(n) where n = number of items being shipped
 #O(1)
 def add_buffer(length, width, height, buffer_inches):
