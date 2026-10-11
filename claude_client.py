@@ -4,4 +4,4 @@ from anthropic import Anthropic
 load_dotenv()
 
 client = Anthropic()
-MODEL = "claude-sonnet-4-6"
+MODEL = "claude-sonnet-5"
