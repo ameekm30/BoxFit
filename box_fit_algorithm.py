@@ -529,4 +529,6 @@ def main():
     print(description_dict['packing_note'])
     print(description_dict['upsell_tip'])
     print(fragile_warning)
-main()
+if __name__ == "__main__":
+    main()
+
