@@ -1,7 +1,11 @@
 from chat_helpers import chat, add_user_message, add_assistant_message,strip_fences
-from inventory_parser import parse_inventory, read_csv_rows
+from inventory_loader_via_db import retrive_inventory
+#from inventory_parser import parse_inventory, read_csv_rows
 import json
 
+
+dollars_to_cu_in_exchange_rate = 750
+sample_store_id = 1 #will be changed later when accounts will be created.
 # n = number of items being shipped, m = number of boxes in inventory
 system_prompt = '''
 <role>
@@ -183,9 +187,15 @@ def rank_boxes(new_length, new_width, new_height, inventory):
             item_vol = new_length * new_width * new_height
             waste = volume - item_vol
             new_box = box.copy()
+            if new_box['price'] != None:
+                score_price = float(new_box['price'])
+            else:
+                continue
+            score = waste + (score_price*dollars_to_cu_in_exchange_rate)
             new_box["waste"] = waste
+            new_box['score'] = score
             fits.append(new_box)
-    fits.sort(key=lambda box: box["waste"])  # O(m log m)
+    fits.sort(key=lambda new_box: new_box["score"])  # O(m log m)
     return fits[:3]  # O(1)
 
 
@@ -404,9 +414,7 @@ print(select_boxes(stacked_foldable, True, 3, INVENTORY, '3 Versace Pants'))
 
 
 def main():
-    with open('test_inventory.csv', 'r') as handle:
-        handle = handle.read()
-        inventory_pre = parse_inventory(read_csv_rows(handle))
+    inventory_pre = retrive_inventory(sample_store_id)
     while True:
         try:
             amount = int(input('Enter amount of items you are shipping: '))
@@ -529,4 +537,6 @@ def main():
     print(description_dict['packing_note'])
     print(description_dict['upsell_tip'])
     print(fragile_warning)
-main()
+if __name__ == "__main__":
+    main()
+

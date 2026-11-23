@@ -326,7 +326,7 @@ def parse_inventory(text_rows):
 
         name = str(box_name) +  str(pre_length) + 'x' + str(pre_width) + 'x' + str(pre_height) + ' ' +  wall_type
 
-        pre_inventory_dict = {"name": name, "length": length, "width": width, "height": height, "price": box_only_price, "wall_type": wall_type, 'standard_packing_price': standard_packing_price,'fragile_packing_price': fragile_packing_price}
+        pre_inventory_dict = {"box_name": box_name.strip(), "name": name, "length": length, "width": width, "height": height, "price": box_only_price, "wall_type": wall_type, 'standard_packing_price': standard_packing_price,'fragile_packing_price': fragile_packing_price}
 
         inventory_result.append(pre_inventory_dict)
     return inventory_result
